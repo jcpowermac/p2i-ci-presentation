@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="author" content="Joseph Callen"><title>Jenkins &amp; p2i</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/css/theme/black.css" id="theme"><style>.listingblock .pygments .hll { background-color: #222222 }
+.listingblock .pygments, .listingblock .pygments code { background: #000000; color: #cccccc }
+.listingblock .pygments .tok-c { color: #000080 } /* Comment */
+.listingblock .pygments .tok-err { color: #cccccc; border: 1px solid #FF0000 } /* Error */
+.listingblock .pygments .tok-esc { color: #cccccc } /* Escape */
+.listingblock .pygments .tok-g { color: #cccccc } /* Generic */
+.listingblock .pygments .tok-k { color: #cdcd00 } /* Keyword */
+.listingblock .pygments .tok-l { color: #cccccc } /* Literal */
+.listingblock .pygments .tok-n { color: #cccccc } /* Name */
+.listingblock .pygments .tok-o { color: #3399cc } /* Operator */
+.listingblock .pygments .tok-x { color: #cccccc } /* Other */
+.listingblock .pygments .tok-p { color: #cccccc } /* Punctuation */
+.listingblock .pygments .tok-ch { color: #000080 } /* Comment.Hashbang */
+.listingblock .pygments .tok-cm { color: #000080 } /* Comment.Multiline */
+.listingblock .pygments .tok-cp { color: #000080 } /* Comment.Preproc */
+.listingblock .pygments .tok-cpf { color: #000080 } /* Comment.PreprocFile */
+.listingblock .pygments .tok-c1 { color: #000080 } /* Comment.Single */
+.listingblock .pygments .tok-cs { color: #cd0000; font-weight: bold } /* Comment.Special */
+.listingblock .pygments .tok-gd { color: #cd0000 } /* Generic.Deleted */
+.listingblock .pygments .tok-ge { color: #cccccc; font-style: italic } /* Generic.Emph */
+.listingblock .pygments .tok-gr { color: #FF0000 } /* Generic.Error */
+.listingblock .pygments .tok-gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.listingblock .pygments .tok-gi { color: #00cd00 } /* Generic.Inserted */
+.listingblock .pygments .tok-go { color: #888888 } /* Generic.Output */
+.listingblock .pygments .tok-gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.listingblock .pygments .tok-gs { color: #cccccc; font-weight: bold } /* Generic.Strong */
+.listingblock .pygments .tok-gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.listingblock .pygments .tok-gt { color: #0044DD } /* Generic.Traceback */
+.listingblock .pygments .tok-kc { color: #cdcd00 } /* Keyword.Constant */
+.listingblock .pygments .tok-kd { color: #00cd00 } /* Keyword.Declaration */
+.listingblock .pygments .tok-kn { color: #cd00cd } /* Keyword.Namespace */
+.listingblock .pygments .tok-kp { color: #cdcd00 } /* Keyword.Pseudo */
+.listingblock .pygments .tok-kr { color: #cdcd00 } /* Keyword.Reserved */
+.listingblock .pygments .tok-kt { color: #00cd00 } /* Keyword.Type */
+.listingblock .pygments .tok-ld { color: #cccccc } /* Literal.Date */
+.listingblock .pygments .tok-m { color: #cd00cd } /* Literal.Number */
+.listingblock .pygments .tok-s { color: #cd0000 } /* Literal.String */
+.listingblock .pygments .tok-na { color: #cccccc } /* Name.Attribute */
+.listingblock .pygments .tok-nb { color: #cd00cd } /* Name.Builtin */
+.listingblock .pygments .tok-nc { color: #00cdcd } /* Name.Class */
+.listingblock .pygments .tok-no { color: #cccccc } /* Name.Constant */
+.listingblock .pygments .tok-nd { color: #cccccc } /* Name.Decorator */
+.listingblock .pygments .tok-ni { color: #cccccc } /* Name.Entity */
+.listingblock .pygments .tok-ne { color: #666699; font-weight: bold } /* Name.Exception */
+.listingblock .pygments .tok-nf { color: #cccccc } /* Name.Function */
+.listingblock .pygments .tok-nl { color: #cccccc } /* Name.Label */
+.listingblock .pygments .tok-nn { color: #cccccc } /* Name.Namespace */
+.listingblock .pygments .tok-nx { color: #cccccc } /* Name.Other */
+.listingblock .pygments .tok-py { color: #cccccc } /* Name.Property */
+.listingblock .pygments .tok-nt { color: #cccccc } /* Name.Tag */
+.listingblock .pygments .tok-nv { color: #00cdcd } /* Name.Variable */
+.listingblock .pygments .tok-ow { color: #cdcd00 } /* Operator.Word */
+.listingblock .pygments .tok-w { color: #cccccc } /* Text.Whitespace */
+.listingblock .pygments .tok-mb { color: #cd00cd } /* Literal.Number.Bin */
+.listingblock .pygments .tok-mf { color: #cd00cd } /* Literal.Number.Float */
+.listingblock .pygments .tok-mh { color: #cd00cd } /* Literal.Number.Hex */
+.listingblock .pygments .tok-mi { color: #cd00cd } /* Literal.Number.Integer */
+.listingblock .pygments .tok-mo { color: #cd00cd } /* Literal.Number.Oct */
+.listingblock .pygments .tok-sa { color: #cd0000 } /* Literal.String.Affix */
+.listingblock .pygments .tok-sb { color: #cd0000 } /* Literal.String.Backtick */
+.listingblock .pygments .tok-sc { color: #cd0000 } /* Literal.String.Char */
+.listingblock .pygments .tok-dl { color: #cd0000 } /* Literal.String.Delimiter */
+.listingblock .pygments .tok-sd { color: #cd0000 } /* Literal.String.Doc */
+.listingblock .pygments .tok-s2 { color: #cd0000 } /* Literal.String.Double */
+.listingblock .pygments .tok-se { color: #cd0000 } /* Literal.String.Escape */
+.listingblock .pygments .tok-sh { color: #cd0000 } /* Literal.String.Heredoc */
+.listingblock .pygments .tok-si { color: #cd0000 } /* Literal.String.Interpol */
+.listingblock .pygments .tok-sx { color: #cd0000 } /* Literal.String.Other */
+.listingblock .pygments .tok-sr { color: #cd0000 } /* Literal.String.Regex */
+.listingblock .pygments .tok-s1 { color: #cd0000 } /* Literal.String.Single */
+.listingblock .pygments .tok-ss { color: #cd0000 } /* Literal.String.Symbol */
+.listingblock .pygments .tok-bp { color: #cd00cd } /* Name.Builtin.Pseudo */
+.listingblock .pygments .tok-fm { color: #cccccc } /* Name.Function.Magic */
+.listingblock .pygments .tok-vc { color: #00cdcd } /* Name.Variable.Class */
+.listingblock .pygments .tok-vg { color: #00cdcd } /* Name.Variable.Global */
+.listingblock .pygments .tok-vi { color: #00cdcd } /* Name.Variable.Instance */
+.listingblock .pygments .tok-vm { color: #00cdcd } /* Name.Variable.Magic */
+.listingblock .pygments .tok-il { color: #cd00cd } /* Literal.Number.Integer.Long */</style><link href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section class="title"><h1>Jenkins &amp; p2i</h1><p class="author"><small>Joseph Callen</small></p></section><section><section id="_where_to_begin"><h2>Where to begin&#8230;&#8203;</h2></section><section><div class="paragraph"><p>I broke it&#8230;&#8203;</p></div>
+<div class="listingblock"><div class="content"><pre class="pygments highlight"><code>ENV APP_ROOT=/opt/app-root \
+    USER_NAME=default \
+    USER_UID=1001 \ 			<b>(1)</b>
+ENV APP_HOME=${APP_ROOT}/src  PATH=$PATH:${APP_ROOT}/bin
+RUN mkdir -p ${APP_HOME} ${APP_ROOT}/etc ${APP_ROOT}/bin</code></pre></div></div>
+<div class="colist arabic"><ol><li><p>oops</p></li></ol></div></section></section>
+<section><section id="_jenkins"><h2>Jenkins</h2></section><section><div class="paragraph"><p>Testing Pull Requests&#8230;&#8203;Jenkinfile!</p></div>
+<div class="paragraph"><p>ooh&#8230;&#8203;Blue Ocean is pretty :)</p></div></section><section id="_here_come_the_problems"><h2>Here come the problems&#8230;&#8203;</h2><div class="paragraph"><p>Wait I can&#8217;t do a multibranch pipeline with OCP?</p></div>
+<div class="paragraph"><p>Ugh&#8230;&#8203;where can I run this?</p></div>
+<div class="paragraph"><p>Do I really want to deal with PVCs?</p></div></section><section><div class="paragraph"><p>Nope&#8230;&#8203;</p></div></section></section>
+<section><section id="_solution"><h2>Solution</h2><div class="paragraph"><p>Here comes the power of OpenShift and Jenkins working together&#8230;&#8203;</p></div></section><section id="_jenkins_s2i"><h2>Jenkins S2I</h2><div class="ulist"><ul><li><p>Seed freestyle job</p></li><li><p>Global library configuration</p></li><li><p>Lots and lots of plugins</p></li></ul></div></section><section id="_openshift"><h2>OpenShift</h2><div class="ulist"><ul><li><p>Create a <code>new-build</code> of Jenkins</p></li><li><p>Create Jenkins using built-in template</p></li><li><p>Store the GitHub token in a secret</p></li></ul></div></section><section id="_openshift_continued"><h2>OpenShift Continued</h2><div class="ulist"><ul><li><p>Create the pipeline <code>jenkins/openshift/pipeline.yaml</code>:</p><div class="ulist"><ul><li><p>Creates a Jenkins cred from secret:</p><div class="ulist"><ul><li><p>Uses a Global library <code>src/com/redhat/Utils.groovy</code></p></li></ul></div></li><li><p>Executes the seed job</p></li></ul></div></li></ul></div></section><section id="_seed_job"><h2>Seed job</h2><div class="paragraph"><p>Checks out the project and executes:
+<code>jenkins/jobs/orgFolderJob.groovy</code></p></div></section></section>
+<section id="_fin"><h2>Fin</h2></section></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/lib/js/head.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: false,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: false,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, league, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'black',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.04,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.4.1/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

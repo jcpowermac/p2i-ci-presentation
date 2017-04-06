@@ -1,0 +1,74 @@
+= Jenkins & p2i  
+Joseph Callen
+:source-highlighter: pygments
+:pygments-style: vim 
+:revealjs_theme: black 
+:revealjs_margin: 0.04
+
+== Where to begin... 
+
+=== !
+
+I broke it...
+
+----
+ENV APP_ROOT=/opt/app-root \
+    USER_NAME=default \
+    USER_UID=1001 \ 			<1>
+ENV APP_HOME=${APP_ROOT}/src  PATH=$PATH:${APP_ROOT}/bin
+RUN mkdir -p ${APP_HOME} ${APP_ROOT}/etc ${APP_ROOT}/bin
+----
+<1> oops
+
+
+== Jenkins
+
+=== !
+
+Testing Pull Requests...Jenkinfile!
+
+ooh...Blue Ocean is pretty :)
+
+=== Here come the problems...
+
+Wait I can't do a multibranch pipeline with OCP?
+
+Ugh...where can I run this?
+
+Do I really want to deal with PVCs? 
+
+=== !
+
+Nope...
+
+
+== Solution
+
+Here comes the power of OpenShift and Jenkins working together...
+
+=== Jenkins S2I 
+
+* Seed freestyle job
+* Global library configuration
+* Lots and lots of plugins
+
+=== OpenShift
+
+* Create a `new-build` of Jenkins
+* Create Jenkins using built-in template
+* Store the GitHub token in a secret
+
+=== OpenShift Continued
+
+* Create the pipeline `jenkins/openshift/pipeline.yaml`:
+** Creates a Jenkins cred from secret:
+*** Uses a Global library `src/com/redhat/Utils.groovy`
+** Executes the seed job
+
+=== Seed job
+
+Checks out the project and executes: 
+`jenkins/jobs/orgFolderJob.groovy` 
+
+
+== Fin
